@@ -1,0 +1,64 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.6.RELEASE'
+        lombokVersion = '1.18.2'
+        akkaVersion = '2.5.17'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'org.springframework.boot' version '2.0.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'net.ltgt.apt' version '0.10'
+}
+
+group = 'com.yboyacigil.experiments'
+description = 'An experiment to use spring boot with akka for implementing a wallet server'
+version = '1.0-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+bootJar {
+    baseName = 'yb-springboot-akka-walletserver'
+    mainClassName = 'com.yboyacigil.experiments.springboot.akka.gie.Application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    testCompile 'junit:junit'
+
+    // Lombok
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    apt "org.projectlombok:lombok:${lombokVersion}"
+
+    // Spring
+    compile 'org.springframework.boot:spring-boot-starter-jersey'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+
+    // Akka
+    compile "com.typesafe.akka:akka-actor_2.11:${akkaVersion}"
+    compile "com.typesafe.akka:akka-slf4j_2.11:${akkaVersion}"
+    testCompile "com.typesafe.akka:akka-testkit_2.11:${akkaVersion}"
+    
+    // Spock
+    compile 'org.codehaus.groovy:groovy-all:2.4.10'
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
+    
+}
+
