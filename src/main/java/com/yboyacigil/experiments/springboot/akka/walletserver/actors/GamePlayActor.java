@@ -6,7 +6,7 @@ import com.yboyacigil.experiments.springboot.akka.walletserver.messages.Balance;
 import com.yboyacigil.experiments.springboot.akka.walletserver.messages.Currency;
 import com.yboyacigil.experiments.springboot.akka.walletserver.messages.GetBalance;
 import com.yboyacigil.experiments.springboot.akka.walletserver.messages.GetCurrency;
-import com.yboyacigil.experiments.springboot.akka.walletserver.services.GISService;
+import com.yboyacigil.experiments.springboot.akka.walletserver.services.AccountingService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +16,10 @@ import java.util.Optional;
 @Scope("prototype")
 public class GamePlayActor extends AbstractLoggingActor {
 
-    private GISService gisService;
+    private AccountingService accountingService;
 
-    public GamePlayActor(GISService gisService) {
-        this.gisService = gisService;
+    public GamePlayActor(AccountingService accountingService) {
+        this.accountingService = accountingService;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class GamePlayActor extends AbstractLoggingActor {
 
     private void receiveGetCurrency(GetCurrency getCurrency) {
         try {
-            Optional<GISService.PlayerInfo> maybePlayerInfo = gisService.getPlayerInfo(getCurrency.getPid());
+            Optional<AccountingService.PlayerInfo> maybePlayerInfo = accountingService.getPlayerInfo(getCurrency.getPid());
 
             Optional<Currency> maybeCurrency = maybePlayerInfo.map(playerInfo ->
                 Currency.builder()
@@ -51,7 +51,7 @@ public class GamePlayActor extends AbstractLoggingActor {
 
     private void receiveGetBalance(GetBalance getBalance) {
         try {
-            Optional<GISService.BalanceInfo> maybeBalanceInfo = gisService.getBalanceInfo(getBalance.getPid());
+            Optional<AccountingService.BalanceInfo> maybeBalanceInfo = accountingService.getBalanceInfo(getBalance.getPid());
 
             Optional<Balance> maybeBalance = maybeBalanceInfo.map(balanceInfo ->
                 Balance.builder()

@@ -10,7 +10,6 @@ public class JerseyConfig  extends ResourceConfig {
     public JerseyConfig() {
         packages("com.yboyacigil.experiments.springboot.akka.walletserver.endpoints");
 
-
         register(LoggingFeature.class);
         property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "INFO");
     }

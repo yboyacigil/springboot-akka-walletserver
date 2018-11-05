@@ -1,7 +1,7 @@
 package com.yboyacigil.experiments.springboot.akka.walletserver.endpoints;
 
 import com.yboyacigil.experiments.springboot.akka.walletserver.messages.Currency;
-import com.yboyacigil.experiments.springboot.akka.walletserver.services.GISService;
+import com.yboyacigil.experiments.springboot.akka.walletserver.services.AccountingService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +26,18 @@ public class WalletServerEndpointTest {
     private TestRestTemplate restTemplate;
 
     @MockBean
-    private GISService gisService;
+    private AccountingService accountingService;
 
     @Test
     public void should_ReturnOkWithCurrency_When_PlayerInfoExists() {
         final Long pid = 1L;
         final String isoCurrencyCode = "SEK";
 
-        GISService.PlayerInfo playerInfo = GISService.PlayerInfo.builder()
+        AccountingService.PlayerInfo playerInfo = AccountingService.PlayerInfo.builder()
             .pid(pid)
             .isoCurrencyCode(isoCurrencyCode)
             .build();
-        when(gisService.getPlayerInfo(pid)).thenReturn(Optional.of(playerInfo));
+        when(accountingService.getPlayerInfo(pid)).thenReturn(Optional.of(playerInfo));
 
         ResponseEntity<Currency> entity =
             restTemplate.getForEntity("/walletserver/players/1/account/currency", Currency.class);
@@ -45,34 +45,34 @@ public class WalletServerEndpointTest {
         assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(entity.getBody()).isEqualTo(Currency.builder().pid(1L).isoCurrencyCode("SEK").build());
 
-        verify(gisService).getPlayerInfo(pid);
+        verify(accountingService).getPlayerInfo(pid);
     }
 
     @Test
     public void should_ReturnServerError_When_ExceptionThrown() {
         final Long pid = 1L;
 
-        when(gisService.getPlayerInfo(pid)).thenThrow(new RuntimeException());
+        when(accountingService.getPlayerInfo(pid)).thenThrow(new RuntimeException());
 
         ResponseEntity<EndpointExceptionMapper.ErrorInfo> entity =
             restTemplate.getForEntity("/walletserver/players/1/account/currency", EndpointExceptionMapper.ErrorInfo.class);
 
         assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        verify(gisService).getPlayerInfo(pid);
+        verify(accountingService).getPlayerInfo(pid);
     }
 
     @Test
     public void should_ReturnNotFound_When_NoPlayerOrCurrencyFound() {
         final Long pid = 1L;
 
-        when(gisService.getPlayerInfo(pid)).thenReturn(Optional.empty());
+        when(accountingService.getPlayerInfo(pid)).thenReturn(Optional.empty());
 
         ResponseEntity<EndpointExceptionMapper.ErrorInfo> entity =
             restTemplate.getForEntity("/walletserver/players/1/account/currency", EndpointExceptionMapper.ErrorInfo.class);
 
         assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
-        verify(gisService).getPlayerInfo(pid);
+        verify(accountingService).getPlayerInfo(pid);
     }
 }

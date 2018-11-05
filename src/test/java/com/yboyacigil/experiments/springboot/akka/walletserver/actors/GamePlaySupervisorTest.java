@@ -8,7 +8,7 @@ import com.yboyacigil.experiments.springboot.akka.walletserver.config.SpringExte
 import com.yboyacigil.experiments.springboot.akka.walletserver.messages.GetCurrency;
 import com.yboyacigil.experiments.springboot.akka.walletserver.messages.GetSupervisorStats;
 import com.yboyacigil.experiments.springboot.akka.walletserver.messages.SupervisorStats;
-import com.yboyacigil.experiments.springboot.akka.walletserver.services.GISService;
+import com.yboyacigil.experiments.springboot.akka.walletserver.services.AccountingService;
 import org.assertj.core.util.Sets;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +34,7 @@ public class GamePlaySupervisorTest {
     private SpringExtension springExtension;
 
     @MockBean
-    private GISService gisService;
+    private AccountingService gisService;
 
 
     @Test

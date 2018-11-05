@@ -23,7 +23,7 @@ public class ApplicationConfig {
 
     @Bean(destroyMethod = "terminate")
     public ActorSystem actorSystem() {
-        ActorSystem system = ActorSystem.create("gie-actor-system", akkaConfig());
+        ActorSystem system = ActorSystem.create("game-play-actor-system", akkaConfig());
         springExtension.initialize(applicationContext);
         return system;
     }

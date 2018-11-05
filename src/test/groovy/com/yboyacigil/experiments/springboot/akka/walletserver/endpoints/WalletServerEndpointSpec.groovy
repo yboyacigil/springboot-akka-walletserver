@@ -1,6 +1,6 @@
 package com.yboyacigil.experiments.springboot.akka.walletserver.endpoints
 
-import com.yboyacigil.experiments.springboot.akka.walletserver.services.GISService
+import com.yboyacigil.experiments.springboot.akka.walletserver.services.AccountingService
 import com.yboyacigil.experiments.springboot.akka.walletserver.messages.Currency
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -17,18 +17,18 @@ class WalletServerEndpointSpec extends Specification {
     TestRestTemplate restTemplate
 
     @Autowired
-    GISService gisService
+    AccountingService accountingService
 
     def ".../currency should return ok for an existing player info"() {
         given:
             def pid = 1L
             def url = "/walletserver/players/${pid}/account/currency"
             def isoCurrencyCode = "SEK"
-            def playerInfo = GISService.PlayerInfo.builder()
+            def playerInfo = AccountingService.PlayerInfo.builder()
             .pid(pid)
             .isoCurrencyCode(isoCurrencyCode)
             .build()
-            1 * gisService.getPlayerInfo(pid) >> Optional.of(playerInfo)
+            1 * accountingService.getPlayerInfo(pid) >> Optional.of(playerInfo)
 
         when:
             def entity =
@@ -44,7 +44,7 @@ class WalletServerEndpointSpec extends Specification {
         given:
             def pid = 1L
             def url = "/walletserver/players/${pid}/account/currency"
-            1 * gisService.getPlayerInfo(pid) >> Optional.empty()
+            1 * accountingService.getPlayerInfo(pid) >> Optional.empty()
 
         when:
             def entity =
@@ -58,7 +58,7 @@ class WalletServerEndpointSpec extends Specification {
         given:
             def pid = 1L
             def url = "/walletserver/players/${pid}/account/currency"
-            1 * gisService.getPlayerInfo(pid) >> { throw new RuntimeException() }
+            1 * accountingService.getPlayerInfo(pid) >> { throw new RuntimeException() }
 
         when:
             def entity =

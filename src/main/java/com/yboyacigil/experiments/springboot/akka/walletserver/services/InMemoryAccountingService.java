@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
-public class InMemoryGISService implements GISService {
+public class InMemoryAccountingService implements AccountingService {
 
     private Random random = new Random();
 
@@ -36,6 +36,21 @@ public class InMemoryGISService implements GISService {
                     .balance(BigDecimal.valueOf(random.nextDouble()))
                     .build()
             );
+    }
+
+    @Override
+    public Optional<WithdrawResult> withdraw(Withdraw withdraw) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<DepositResult> deposit(Deposit deposit) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<RollbackResult> rollback(Rollback rollback) {
+        return Optional.empty();
     }
 
 }

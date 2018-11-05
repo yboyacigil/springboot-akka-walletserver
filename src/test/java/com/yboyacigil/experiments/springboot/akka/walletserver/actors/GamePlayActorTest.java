@@ -10,7 +10,7 @@ import com.yboyacigil.experiments.springboot.akka.walletserver.messages.Balance;
 import com.yboyacigil.experiments.springboot.akka.walletserver.messages.Currency;
 import com.yboyacigil.experiments.springboot.akka.walletserver.messages.GetBalance;
 import com.yboyacigil.experiments.springboot.akka.walletserver.messages.GetCurrency;
-import com.yboyacigil.experiments.springboot.akka.walletserver.services.GISService;
+import com.yboyacigil.experiments.springboot.akka.walletserver.services.AccountingService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class GamePlayActorTest {
     private SpringExtension springExtension;
 
     @MockBean
-    private GISService gisService;
+    private AccountingService gisService;
 
     @Test
     public void should_ReceiveGetCurrencyReturnCurrency_When_PlayerInfoExists() {
@@ -47,7 +47,7 @@ public class GamePlayActorTest {
         final Long pid = 1L;
         final String isoCurrencyCode = "SEK";
 
-        GISService.PlayerInfo playerInfo = GISService.PlayerInfo.builder()
+        AccountingService.PlayerInfo playerInfo = AccountingService.PlayerInfo.builder()
             .pid(pid)
             .isoCurrencyCode(isoCurrencyCode)
             .build();
@@ -135,7 +135,7 @@ public class GamePlayActorTest {
         final String isoCurrencyCode = "SEK";
         final BigDecimal balance = BigDecimal.ONE;
 
-        GISService.BalanceInfo balanceInfo = GISService.BalanceInfo.builder()
+        AccountingService.BalanceInfo balanceInfo = AccountingService.BalanceInfo.builder()
             .pid(pid)
             .isoCurrencyCode(isoCurrencyCode)
             .balance(balance)
